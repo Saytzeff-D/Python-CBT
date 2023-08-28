@@ -1,3 +1,6 @@
+import sys
+import time
+
 fname = input('Enter your First Name: ')
 lname = input('Enter your Last Name: ')
 matric = input('Enter your Matric Number: ')
@@ -19,12 +22,15 @@ def intro():
         user_matric = input('Matric Number: ')
         user_pass = input('Password: ')
         if user_matric == matric and user_pass == lname:
-            print(f'\nStart Test!\nInstructions: You are to answer {len(questions)} questions. Pick the most appropriate options!')
+            print('\nPlease wait. Logging in...')
+            time.sleep(4)
+            print(f'\nWelcome back, {fname} {lname}. Matric No - {matric}\nStart Test!\nInstructions: You are to answer {len(questions)} questions. Pick the most appropriate options!')
             cbtStart()
         else:
             print('User not found!')
     elif response == '1':
         print('\nGoodbye!')
+        sys.exit()
     else:
         intro()
 
