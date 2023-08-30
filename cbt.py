@@ -1,40 +1,55 @@
 import sys
 import time
 
-fname = input('Enter your First Name: ')
-lname = input('Enter your Last Name: ')
-matric = input('Enter your Matric Number: ')
+users = []
+result = []
+print('Hi Admin!')
+_no_of_student = int(input('How many students do you intend to add? '))
 
-details = (fname, lname, matric)
+i = 1
+for x in range(_no_of_student):
+    print(f'\nStudent {i}')
+    fname = input('Enter First Name: ')
+    lname = input('Enter Last Name: ')
+    matric = input('Enter Matric Number: ')
+    details = {'id': i, 'fname': fname, 'lname': lname, 'matric': matric}
+    users.append(details)
+    i += 1
+    
+
 questions = [
-    'Who is the President of Nigeria?', 
-    'Who is the Rector of SQI College of ICT?', 
-    'Who is Governor of Oyo State?', 
+    'Who is the President of Nigeria?',
+    'Who is the Rector of SQI College of ICT?',
+    'Who is Governor of Oyo State?',
     'The largest Ocean in the World is?'
 ]
 
-print(f'\nWelcome {fname} {lname}!')
-def intro():
+# print(f'\nWelcome {fname} {lname}!')
+# print(users)
+def intro(each):
+    print(f"\n\nHello {each['fname']} {each['lname']} with Student Matric Number {each['matric']}")
     print('Kindly Press ENTER to sign in or 1 to exit')
     response = input('')
     if response == '':
         print('\nLog In!\nYour Surname is your password\n')
         user_matric = input('Matric Number: ')
         user_pass = input('Password: ')
-        if user_matric == matric and user_pass == lname:
+        if user_matric == each['matric'] and user_pass == each['lname']:
             print('\nPlease wait. Logging in...')
             time.sleep(4)
-            print(f'\nWelcome back, {fname} {lname}. Matric No - {matric}\nStart Test!\nInstructions: You are to answer {len(questions)} questions. Pick the most appropriate options!')
-            cbtStart()
+            print(f"\nWelcome back, {each['fname']} {each['lname']}. Matric No - {each['matric']}\nStart Test!\nInstructions: You are to answer {len(questions)} questions. Pick the most appropriate options!")
+            cbtStart(each)
         else:
             print('User not found!')
+            each['score'] = int(0)
     elif response == '1':
         print('\nGoodbye!')
+        each['score'] = int(0)
         sys.exit()
     else:
-        intro()
+        intro(each)
 
-def cbtStart():
+def cbtStart(user):
     options = [
         ('A. Muhammadu Buhari', 'B. Goodluck Ebele Jonathan', 'C. Bola Ahmed Tinubu', 'D. Olusegun Obasanjo'),
         ('A. Grace Aderinto', 'B. Fredrick Aderinto', 'C. Christopher Aderinto', 'D. None of the Above'),
@@ -60,6 +75,17 @@ def cbtStart():
             score += 1/len(questions) * 100
         else:
             ''
-    print(f'\nHi {fname}, your score is {int(score)}/100')
+    # print(f"\nHi {user['fname']}, your score is {int(score)}/100")
+    user['score'] = int(score) 
+    result.append(int(score))
+    
 
-intro()
+for each in users:
+    intro(each)
+highest = list(filter((lambda x: x['score'] == max(result)), users))
+lowest = list(filter((lambda x: x['score'] == min(result)), users))
+
+for each in highest:
+    print(f"\n{each['fname']} {each['lname']} has the highest score of {each['score']}/100 in the examination")
+for each in lowest:
+    print(f"WHILE\n{each['fname']} {each['lname']} has the lowest score of {each['score']}/100 in the examination")
